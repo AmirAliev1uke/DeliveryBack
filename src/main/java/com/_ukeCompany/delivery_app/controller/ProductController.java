@@ -1,5 +1,7 @@
 package com._ukeCompany.delivery_app.controller;
 
+import com._ukeCompany.delivery_app.DTO.CategoryDTO;
+import com._ukeCompany.delivery_app.DTO.ProductDTO;
 import com._ukeCompany.delivery_app.entity.Product;
 import com._ukeCompany.delivery_app.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,10 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
+    }
+
+    @PostMapping("/byCategoryName")
+    public List <ProductDTO> getProductByCategory(@RequestBody CategoryDTO categoryDTO) {
+        return productService.getProductByCategoryName(categoryDTO.getId());
     }
 }

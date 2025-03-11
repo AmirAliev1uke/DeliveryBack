@@ -1,5 +1,6 @@
 package com._ukeCompany.delivery_app.controller;
 
+import com._ukeCompany.delivery_app.DTO.CategoryDTO;
 import com._ukeCompany.delivery_app.entity.Category;
 import com._ukeCompany.delivery_app.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,15 @@ import java.util.List;
 @RequestMapping("/categories")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CategoryController {
-    @Autowired
+
     private CategoryService categoryService;
 
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryDTO> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
