@@ -37,7 +37,7 @@ public class MinioService {
                         .contentType(file.getContentType())
                         .build()
         );
-        return fileName;
+        return "http://localhost:9000/images/" + fileName;
     }
 
     public InputStream getFile(String fileName) throws IOException, MinioException, NoSuchAlgorithmException, InvalidKeyException {

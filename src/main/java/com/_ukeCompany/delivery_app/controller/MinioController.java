@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/files")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MinioController {
     private final MinioService minioService;
 

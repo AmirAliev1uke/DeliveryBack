@@ -15,6 +15,7 @@ public class Product {
     private String name;
     private double price;
     private String description;
+    private String imageurl;
     @ColumnDefault("false")
     private Boolean isDeleted = Boolean.FALSE;
     @ManyToOne(fetch = FetchType.LAZY)
