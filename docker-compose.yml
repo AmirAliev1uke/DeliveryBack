@@ -46,6 +46,39 @@ services:
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_API_REQUESTS_MAX: "50MB"
     volumes:
-      - D:/MiniOData:/data
+      - /Users/amiraliev/volumes/minio:/data:cached
     command: server /data --console-address ":9001"
+
+  postgres:
+    image: postgres:17.4
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - /Users/amiraliev/volumes/postgres:/var/lib/postgresql/data:cached
+      - /Users/amiraliev/volumes/postgresInit:/docker-entrypoint-initdb.d/init.sql
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.2
+    container_name: keycloak
+    depends_on:
+      - postgres
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/postgres?currentSchema=keycloak_schema
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
+      KC_HTTP_ENABLED: "true"  # Для разработки (в проде используйте HTTPS)
+    ports:
+      - "8180:8080"  # Маппинг 8180 внешний → 8080 внутри контейнера
+    volumes:
+      - /Users/amiraliev/volumes/postgres:/opt/keycloak/data  # Для сохранения данных между перезапусками
+    command: start-dev

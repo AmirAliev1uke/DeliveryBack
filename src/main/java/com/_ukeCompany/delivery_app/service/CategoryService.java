@@ -21,7 +21,7 @@ public class CategoryService {
 
 
     public List<CategoryResponseDTO> getAllCategories() {
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAllByIsDeletedFalse();
         List<CategoryResponseDTO> categoryResponseDTOS = categoryMapper.toResponseDtoList(categories);
         return categoryResponseDTOS;
     }
@@ -38,7 +38,15 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long id) {
-        categoryRepository.deleteById(id);
+        Category category = categoryRepository.findById(id).orElse(null);
+        category.setIsDeleted(true);
+        categoryRepository.save(category);
+    }
+
+    public void updateCategory(Long id, CategoryRequestDTO categoryRequestDTO) {
+        Category category = categoryRepository.findById(id).orElse(null);
+        category.setName(categoryRequestDTO.getName());
+        categoryRepository.save(category);
     }
 
 }

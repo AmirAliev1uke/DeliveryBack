@@ -22,7 +22,7 @@ public class ProductService {
     private final ProductMapper productMapper;
 
     public List<ProductResponceDTO> getAllProducts() {
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAllByIsDeletedFalse();
         List<ProductResponceDTO> productResponceDTOS = productMapper.toProductResponceDTOList(products);
         return productResponceDTOS;
     }
@@ -41,7 +41,9 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+        Product product = productRepository.findById(id).orElse(null);
+        product.setIsDeleted(true);
+        productRepository.save(product);
     }
 
     public List<ProductResponceDTO> getProductByCategoryName(Long categoryId) {

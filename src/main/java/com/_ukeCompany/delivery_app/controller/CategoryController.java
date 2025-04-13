@@ -34,9 +34,14 @@ public class CategoryController {
         return categoryService.saveCategory(categoryRequestDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
+    }
+
+    @PostMapping("/update/{id}")
+    public void updateCategory(@PathVariable Long id, @RequestBody CategoryRequestDTO categoryRequestDTO) {
+        categoryService.updateCategory(id, categoryRequestDTO);
     }
 
 }
